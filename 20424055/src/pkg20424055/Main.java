@@ -23,21 +23,6 @@ public class Main {
 
         handleAction();
     }
-    
-    public static void menu() {
-        System.out.println("\n\n---------------- MENU ----------------\n:");
-        System.out.println("  1 Tim kiem theo slang word.");
-        System.out.println("  2 Tim kiem theo definition.");
-        System.out.println("  3 Hien lich su tim kiem.");
-        System.out.println("  4 Them slang word.");
-        System.out.println("  5 Chuc dang edit slang word.");
-        System.out.println("  6 Chuc nang delete slang word.");
-        System.out.println("  7 Chuc nang reset danh sach slang word.");
-        System.out.println("  8 Chuc nang random 1 slang word.");
-        System.out.println("  9 Chuc nang do vui (cho slang word, chon definition).");
-        System.out.println(" 10 Chuc nang do vui (cho definition, chon slang word).");
-        System.out.print("---------------- MENU ----------------");
-    }
 
     public static void handleAction() throws IOException {
         BufferedReader reader = new BufferedReader(
@@ -55,11 +40,11 @@ public class Main {
             }
             else if (key.equals("1")) {
                 System.out.print("\n\n======================= BAN DA CHON CHUC NANG TIM KIEM THEO SLANG WORD ========================== \n\n");
-                listDic.searchSlangWord();
+                listDic.searchByWord();
             }
             else if (key.equals("2")) {
                 System.out.print("\n\n======================= BAN DA CHON CHUC NANG TIM KIEM THEO DEFINITION ========================== \n\n");
-                listDic.searchKey();
+                listDic.searchByKey();
             }
             else if (key.equals("3")) {
                 System.out.print("\n\n======================= BAN DA CHON CHUC NANG SHOW HISTORY ====================================== \n\n");
@@ -94,5 +79,20 @@ public class Main {
                 listDic.slangwordQuestion();
             }
         }
+    }
+    
+    public static void menu() {
+        System.out.println("\n\n---------------- MENU ----------------\n:");
+        System.out.println("  1 Tim kiem theo slang word.");
+        System.out.println("  2 Tim kiem theo definition.");
+        System.out.println("  3 Hien lich su tim kiem.");
+        System.out.println("  4 Them slang word.");
+        System.out.println("  5 Chuc dang edit slang word.");
+        System.out.println("  6 Chuc nang delete slang word.");
+        System.out.println("  7 Chuc nang reset danh sach slang word.");
+        System.out.println("  8 Chuc nang random 1 slang word.");
+        System.out.println("  9 Chuc nang do vui (cho slang word, chon definition).");
+        System.out.println(" 10 Chuc nang do vui (cho definition, chon slang word).");
+        System.out.print("---------------- MENU ----------------");
     }
 }

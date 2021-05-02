@@ -30,10 +30,10 @@ public class HandlerDictionary {
         this.listDict = new HashMap<String, String>();
     }
 
-    public HashMap<String, String> getListEmoji() {
+    public HashMap<String, String> getListDict() {
         return listDict;
     }
-    public void setListEmoji(HashMap<String, String> listEmoji) {
+    public void setListDict(HashMap<String, String> listEmoji) {
         this.listDict = listEmoji;
     }
     
@@ -46,7 +46,7 @@ public class HandlerDictionary {
         return ref.result;
     }
 
-    public void searchSlangWord() throws IOException {
+    public void searchByWord() throws IOException {
         while (true) {
             System.out.print("\nVui long nhap slang word key can tim (Nhap 0 de dung tim kiem): ");
             String key = reader.readLine();
@@ -66,13 +66,13 @@ public class HandlerDictionary {
                 System.out.printf("Ket qua: %s - %s\n", wordKey,  wordValue);
             }
 
-            saveHistory(wordKey, wordValue);
-            saveHistoryToFile();
+            saveWordHistory(wordKey, wordValue);
+            saveSlangWordHistoryToFile();
         }
     }
 
 
-    public void searchKey() throws IOException {
+    public void searchByKey() throws IOException {
         while (true) {
             System.out.print("\nVui long nhap defination can tim (Nhap 0 de dung tim kiem): ");
             String definition = reader.readLine();
@@ -96,7 +96,7 @@ public class HandlerDictionary {
         }
     }
 
-    void saveHistory(String key, String value) throws IOException {
+    void saveWordHistory(String key, String value) throws IOException {
         // save new word to history:
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -104,7 +104,7 @@ public class HandlerDictionary {
         history += newItem;
     }
 
-    void saveHistoryToFile() throws FileNotFoundException {
+    void saveSlangWordHistoryToFile() throws FileNotFoundException {
         try (Writer writer = new BufferedWriter(new OutputStreamWriter(
                 new FileOutputStream(dataPath() + "history.txt"), "utf-8"))) {
             writer.write(history);
@@ -115,7 +115,7 @@ public class HandlerDictionary {
         }
     }
 
-    void readHistory() {
+    void readSlangWordHistory() {
         try {
             RandomAccessFile file = new RandomAccessFile(dataPath() + "history.txt", "r");
             String str;
@@ -176,7 +176,7 @@ public class HandlerDictionary {
 
     void showHistory() {
         history = "";
-        readHistory();
+        readSlangWordHistory();
         System.out.print(history);
     }
 
@@ -376,6 +376,6 @@ public class HandlerDictionary {
             e.printStackTrace();
         }
 
-        readHistory();
+        readSlangWordHistory();
     }
 }
