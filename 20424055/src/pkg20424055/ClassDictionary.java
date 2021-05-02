@@ -5,10 +5,12 @@
  */
 package pkg20424055;
 
+import java.util.HashMap;
+
 /**
  *
  * @author Nam Dinh
  */
 public class ClassDictionary {
-    
+    HashMap<String, String> listDic = new HashMap<>();
 }
