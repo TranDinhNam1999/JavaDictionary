@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pkg20424055;
 
 import java.io.BufferedReader;
@@ -26,49 +21,29 @@ import java.util.Random;
  * @author Nam Dinh
  */
 public class HandlerDictionary {
-    HashMap<String, String> listEmoji = new HashMap<String, String>();
+    HashMap<String, String> listDict;
     String history = "";
     BufferedReader reader = new BufferedReader(
             new InputStreamReader(System.in));
 
+    public HandlerDictionary() {
+        this.listDict = new HashMap<String, String>();
+    }
+
     public HashMap<String, String> getListEmoji() {
-        return listEmoji;
+        return listDict;
     }
     public void setListEmoji(HashMap<String, String> listEmoji) {
-        this.listEmoji = listEmoji;
+        this.listDict = listEmoji;
     }
     
     @Override
     public String toString() {
         var ref = new var();
-        listEmoji.entrySet().forEach(entry -> {
+        listDict.entrySet().forEach(entry -> {
             ref.result += entry.getKey() + '`' + entry.getValue() + '\n';
         });
         return ref.result;
-    }
-
-    public String dataPath() {
-        String dataPath = "G:\\Project\\20424055\\";
-        return  dataPath;
-    }
-
-    public void readSlangFile() {
-        try {
-            RandomAccessFile file = new RandomAccessFile("G:\\Project\\20424055\\slang.txt", "r");
-            String str;
-            while ((str = file.readLine()) != null) {
-               String[] stringSplit = str.split("`");
-               if (stringSplit.length < 2) {
-                   continue;
-               }
-                listEmoji.put(stringSplit[0], stringSplit[1]);
-            }
-            file.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        readHistory();
     }
 
     public void searchSlangWord() throws IOException {
@@ -81,17 +56,17 @@ public class HandlerDictionary {
                 break;
             }
 
-            String slangWordKey = key;
-            String slangWordValue = listEmoji.get(key);
+            String wordKey = key;
+            String wordValue = listDict.get(key);
 
-            if (slangWordValue == null) {
-                System.out.printf("Khong tim thay ket qua cho key: %s\n", slangWordKey);
+            if (wordValue == null) {
+                System.out.printf("Khong tim thay ket qua cho key: %s\n", wordKey);
             }
             else {
-                System.out.printf("Ket qua: %s - %s\n", slangWordKey,  slangWordValue);
+                System.out.printf("Ket qua: %s - %s\n", wordKey,  wordValue);
             }
 
-            saveHistory(slangWordKey, slangWordValue);
+            saveHistory(wordKey, wordValue);
             saveHistoryToFile();
         }
     }
@@ -108,7 +83,7 @@ public class HandlerDictionary {
             }
 
             String key = null;
-            for(Map.Entry<String, String> entry: listEmoji.entrySet()) {
+            for(Map.Entry<String, String> entry: listDict.entrySet()) {
                 if(entry.getValue().contains(definition)) {
                     System.out.printf("Ket qua: %s - %s\n", definition,  entry.getKey());
                     key = "";
@@ -157,6 +132,47 @@ public class HandlerDictionary {
             e.printStackTrace();
         }
     }
+    
+    void definitionQuestion() throws IOException {
+        Object[] keyList = listDict.keySet().toArray();
+        Object randomKey1 = keyList[new Random().nextInt(keyList.length)];
+        Object randomKey2 = keyList[new Random().nextInt(keyList.length)];
+        Object randomKey3 = keyList[new Random().nextInt(keyList.length)];
+        Object randomKey4 = keyList[new Random().nextInt(keyList.length)];
+
+        String[] listKeys = new String[]{randomKey1.toString(), randomKey2.toString(), randomKey3.toString(), randomKey4.toString()};
+        int randomtemp = new Random().nextInt(listKeys.length);
+        System.out.println("Chon gia tri cho slang word: " + listKeys[randomtemp]);
+
+        System.out.println("1, " + listDict.get(randomKey1));
+        System.out.println("2, " + listDict.get(randomKey2));
+        System.out.println("3, " + listDict.get(randomKey3));
+        System.out.println("4, " + listDict.get(randomKey4));
+
+        System.out.print("Nhap lua chon cua ban: ");
+        String answer = reader.readLine();
+
+        switch (answer) {
+            case "1":
+                answer = randomKey1.toString();
+                break;
+            case "2":
+                answer = randomKey2.toString();
+                break;
+            case "3":
+                answer = randomKey3.toString();
+                break;
+            case "4":
+                answer = randomKey4.toString();
+                break;
+        }
+
+        if (answer == listKeys[randomtemp]) {
+            System.out.println("Chinh xac!");
+        } else {
+            System.out.println("Sai roi!");
+        }
+    }
 
     void showHistory() {
         history = "";
@@ -166,13 +182,13 @@ public class HandlerDictionary {
 
     void addSlangWord() throws IOException {
         while (true) {
-            System.out.print("Nhap slang word moi (nhap (0) de dung): ");
+            System.out.print("Nhap slang word moi (nhap (0) de dung lai): ");
             String key = reader.readLine();
 
             if (key.equals("0")) break;
 
-            if (listEmoji.containsKey(key)) {
-                System.out.println("\nSlang word da ton tai voi definition _ " + listEmoji.get(key) + " \n - nhap (0) de dung \n - nhap (1) de duplicate \n - nhap (2) de overwrite \n");
+            if (listDict.containsKey(key)) {
+                System.out.println("\nSlang word da ton tai voi definition _ " + listDict.get(key) + " \n - nhap (0) de dung \n - nhap (1) de duplicate \n - nhap (2) de overwrite \n");
                 System.out.print(" Nhap lua chon cua ban: ");
                 String chose = reader.readLine();
                 if (chose.equals("0")) {
@@ -181,20 +197,20 @@ public class HandlerDictionary {
                 else if (chose.equals("1")) {
                     System.out.print(" Nhap definition cho slang word _ " + key + ": ");
                     String value = reader.readLine();
-                    listEmoji.put(key + "_duplicated", value);
+                    listDict.put(key + "_duplicated", value);
                     System.out.println("Da duplicate slangword");
                 }
                 else if (chose.equals("2")) {
                     System.out.print(" Nhap definition cho slang word _ " + key + ": ");
                     String value = reader.readLine();
-                    listEmoji.put(key, value);
+                    listDict.put(key, value);
                     System.out.println("Da overwrite slangword");
                 }
             }
             else {
                 System.out.print("\n Nhap definition cho slang word _ " + key + ": ");
                 String value = reader.readLine();
-                listEmoji.put(key, value);
+                listDict.put(key, value);
                 System.out.println("Da nhap thanh cong\n");
             }
 
@@ -232,7 +248,7 @@ public class HandlerDictionary {
 
             if (key.equals("0")) break;
 
-            if (!listEmoji.containsKey(key)) {
+            if (!listDict.containsKey(key)) {
                 System.out.println("Khong tim thay slang word, vui long nhap lai");
                 continue;
             }
@@ -240,7 +256,7 @@ public class HandlerDictionary {
             System.out.print("Ban co chac muon xoa (y/n): ");
             String isConfirm = reader.readLine();
             if (isConfirm.equals("y")) {
-                listEmoji.remove(key);
+                listDict.remove(key);
                 saveNewListSlangWord();
                 System.out.println("Xoa thanh cong");
                 continue;
@@ -248,29 +264,8 @@ public class HandlerDictionary {
         }
     }
 
-    void editSlangWord() throws IOException {
-        while (true) {
-            System.out.print("Nhap slang word muon edit (nhap 0 de dung): ");
-            String key = reader.readLine();
-
-            if (key.equals("0")) break;
-
-            if (!listEmoji.containsKey(key)) {
-                System.out.println("Khong tim thay slang word, vui long nhap lai");
-                continue;
-            }
-
-            System.out.print("Nhap definition: ");
-            String newValue = reader.readLine();
-            listEmoji.put(key, newValue);
-            saveNewListSlangWord();
-            System.out.println("Edit thanh cong !!");
-            continue;
-        }
-    }
-
     void reset() {
-        listEmoji.clear();
+        listDict.clear();
         clearFile(dataPath() + "slang.txt");
 
         try {
@@ -281,7 +276,7 @@ public class HandlerDictionary {
                 if (stringSplit.length < 2) {
                     continue;
                 }
-                listEmoji.put(stringSplit[0], stringSplit[1]);
+                listDict.put(stringSplit[0], stringSplit[1]);
             }
             file.close();
         } catch (IOException e) {
@@ -291,56 +286,36 @@ public class HandlerDictionary {
         saveNewListSlangWord();
         System.out.println("Da reset thanh cong !");
     }
+    void editSlangWord() throws IOException {
+        while (true) {
+            System.out.print("Nhap slang word muon edit (nhap 0 de dung): ");
+            String key = reader.readLine();
+
+            if (key.equals("0")) break;
+
+            if (!listDict.containsKey(key)) {
+                System.out.println("Khong tim thay slang word, vui long nhap lai");
+                continue;
+            }
+
+            System.out.print("Nhap definition: ");
+            String newValue = reader.readLine();
+            listDict.put(key, newValue);
+            saveNewListSlangWord();
+            System.out.println("Edit thanh cong !!");
+            continue;
+        }
+    }
 
     void randomSlang() {
-        Object[] keyList = listEmoji.keySet().toArray();
+        Object[] keyList = listDict.keySet().toArray();
         Object randomKey = keyList[new Random().nextInt(keyList.length)];
-        System.out.println(randomKey + " _____ " + listEmoji.get(randomKey));
+        System.out.println(randomKey + " _____ " + listDict.get(randomKey));
     }
 
-    void definitionQuestion() throws IOException {
-        Object[] keyList = listEmoji.keySet().toArray();
-        Object randomKey1 = keyList[new Random().nextInt(keyList.length)];
-        Object randomKey2 = keyList[new Random().nextInt(keyList.length)];
-        Object randomKey3 = keyList[new Random().nextInt(keyList.length)];
-        Object randomKey4 = keyList[new Random().nextInt(keyList.length)];
-
-        String[] listKeys = new String[]{randomKey1.toString(), randomKey2.toString(), randomKey3.toString(), randomKey4.toString()};
-        int rnd = new Random().nextInt(listKeys.length);
-        System.out.println("Chon gia tri cho slang word: " + listKeys[rnd]);
-
-        System.out.println("a, " + listEmoji.get(randomKey1));
-        System.out.println("b, " + listEmoji.get(randomKey2));
-        System.out.println("c, " + listEmoji.get(randomKey3));
-        System.out.println("d, " + listEmoji.get(randomKey4));
-
-        System.out.print("Nhap lua chon cua ban: ");
-        String answer = reader.readLine();
-
-        switch (answer) {
-            case "a":
-                answer = randomKey1.toString();
-                break;
-            case "b":
-                answer = randomKey2.toString();
-                break;
-            case "c":
-                answer = randomKey3.toString();
-                break;
-            case "d":
-                answer = randomKey4.toString();
-                break;
-        }
-
-        if (answer == listKeys[rnd]) {
-            System.out.println("Chinh xac !!!");
-        } else {
-            System.out.println("Sai roi :(((");
-        }
-    }
 
     void slangwordQuestion() throws IOException {
-        Object[] keyList = listEmoji.keySet().toArray();
+        Object[] keyList = listDict.keySet().toArray();
         Object randomKey1 = keyList[new Random().nextInt(keyList.length)];
         Object randomKey2 = keyList[new Random().nextInt(keyList.length)];
         Object randomKey3 = keyList[new Random().nextInt(keyList.length)];
@@ -348,7 +323,7 @@ public class HandlerDictionary {
 
         String[] listKeys = new String[]{randomKey1.toString(), randomKey2.toString(), randomKey3.toString(), randomKey4.toString()};
         int rnd = new Random().nextInt(listKeys.length);
-        System.out.println("Chon slang word cua definition: " + listEmoji.get(listKeys[rnd]));
+        System.out.println("Chon slang word cua definition: " + listDict.get(listKeys[rnd]));
 
         System.out.println("a, " + randomKey1);
         System.out.println("b, " + randomKey2);
@@ -378,5 +353,29 @@ public class HandlerDictionary {
         } else {
             System.out.println("Sai roi :(((");
         }
+    }
+    
+    public String dataPath() {
+        String dataPath = "G:\\Project\\20424055\\";
+        return  dataPath;
+    }
+
+    public void readSlangFile() {
+        try {
+            RandomAccessFile file = new RandomAccessFile("G:\\Project\\20424055\\slang.txt", "r");
+            String str;
+            while ((str = file.readLine()) != null) {
+               String[] stringSplit = str.split("`");
+               if (stringSplit.length < 2) {
+                   continue;
+               }
+                listDict.put(stringSplit[0], stringSplit[1]);
+            }
+            file.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        readHistory();
     }
 }
