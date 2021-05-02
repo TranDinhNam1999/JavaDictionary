@@ -5,12 +5,14 @@
  */
 package pkg20424055;
 
-import java.util.HashMap;
-
 /**
  *
  * @author Nam Dinh
  */
-public class ClassDictionary {
-    HashMap<String, String> list = new HashMap<>();
+class var {
+    String result;
+    
+    var(){
+        result="";
+    }
 }
