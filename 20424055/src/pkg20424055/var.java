@@ -9,7 +9,7 @@ package pkg20424055;
  *
  * @author Nam Dinh
  */
-class var {
+class varObject {
     String result;
     
     var(){

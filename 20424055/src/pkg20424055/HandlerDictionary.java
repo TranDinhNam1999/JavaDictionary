@@ -39,7 +39,7 @@ public class HandlerDictionary {
     
     @Override
     public String toString() {
-        var ref = new var();
+        varObject ref = new varObject();
         listDict.entrySet().forEach(entry -> {
             ref.result += entry.getKey() + '`' + entry.getValue() + '\n';
         });
@@ -264,28 +264,7 @@ public class HandlerDictionary {
         }
     }
 
-    void reset() {
-        listDict.clear();
-        clearFile(dataPath() + "slang.txt");
-
-        try {
-            RandomAccessFile file = new RandomAccessFile(dataPath() + "slang_backup.txt", "r");
-            String str;
-            while ((str = file.readLine()) != null) {
-                String[] stringSplit = str.split("`");
-                if (stringSplit.length < 2) {
-                    continue;
-                }
-                listDict.put(stringSplit[0], stringSplit[1]);
-            }
-            file.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        saveNewListSlangWord();
-        System.out.println("Da reset thanh cong !");
-    }
+    
     void editSlangWord() throws IOException {
         while (true) {
             System.out.print("Nhap slang word muon edit (nhap 0 de dung): ");
@@ -377,5 +356,28 @@ public class HandlerDictionary {
         }
 
         readSlangWordHistory();
+    }
+
+    void reset() {
+        listDict.clear();
+        clearFile(dataPath() + "slang.txt");
+
+        try {
+            RandomAccessFile file = new RandomAccessFile(dataPath() + "slang_backup.txt", "r");
+            String str;
+            while ((str = file.readLine()) != null) {
+                String[] stringSplit = str.split("`");
+                if (stringSplit.length < 2) {
+                    continue;
+                }
+                listDict.put(stringSplit[0], stringSplit[1]);
+            }
+            file.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        saveNewListSlangWord();
+        System.out.println("Da reset thanh cong !");
     }
 }
